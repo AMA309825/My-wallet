@@ -3,14 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المحفظة الإلكترونية الشخصية</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>متتبع المصروفات الشخصية</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2YXYqtiq2KjYuSDYp9mE2YXYtdix2YjZgdin2KrYjNin2YTYtNiu2LXZitipIiwic2hvcnRfbmFtZSI6ItmF2KrYqtio2Yog2YXYtdix2YjZgdin2KoiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxYTFhMWEiLCJ0aGVtZV9jb2xvciI6IiNmZjZiMzUiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUhacFpYZENiM2c5SWpBZ01DQXhNamdnTVRJNElpQm1hV3hzUFNJalptWTJZak0xSWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zVnlaeTVqYjIwdk1qQXdNQzl6ZG1jaVBnbzhjbVZqZENCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUdacGJHdzlJaU5tWmpaaU16VWlMejRLUEM5emRtYysiLCJzaXplcyI6IjEyOHgxMjgiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
     <style>
         * {
             margin: 0;
@@ -19,27 +13,23 @@
         }
 
         :root {
-            --primary-bg: #0a0a0a;
-            --secondary-bg: #1a1a1a;
-            --card-bg: #2a2a2a;
-            --accent-orange: #ff6b35;
-            --accent-orange-hover: #ff8555;
+            --primary-color: #ff6b35;
+            --secondary-color: #1a1a1a;
+            --background-color: #0f0f0f;
+            --surface-color: #1e1e1e;
             --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --text-muted: #888888;
-            --border-color: #333333;
-            --success: #00ff88;
-            --warning: #ffaa00;
-            --danger: #ff4444;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            --glow: 0 0 20px rgba(255, 107, 53, 0.3);
+            --text-secondary: #b0b0b0;
+            --border-color: #333;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
             color: var(--text-primary);
-            min-height: 100vh;
+            direction: rtl;
             overflow-x: hidden;
         }
 
@@ -51,8 +41,8 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: var(--secondary-bg);
-            border-left: 2px solid var(--accent-orange);
+            background-color: var(--surface-color);
+            border-left: 1px solid var(--border-color);
             transition: transform 0.3s ease;
             position: fixed;
             height: 100vh;
@@ -65,54 +55,52 @@
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 2rem 1.5rem;
             border-bottom: 1px solid var(--border-color);
             text-align: center;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent-orange);
-            text-shadow: var(--glow);
+        .sidebar-header h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .nav-menu {
-            list-style: none;
-            padding: 20px 0;
+            padding: 1rem 0;
         }
 
         .nav-item {
-            margin: 5px 0;
-        }
-
-        .nav-link {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            color: var(--text-secondary);
-            text-decoration: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
             transition: all 0.3s ease;
-            border-right: 3px solid transparent;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            width: 100%;
+            text-align: right;
+            font-size: 1rem;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(255, 107, 53, 0.1);
-            color: var(--accent-orange);
-            border-right-color: var(--accent-orange);
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        .nav-icon {
-            margin-left: 10px;
-            font-size: 18px;
+        .nav-item svg {
+            margin-left: 0.75rem;
+            width: 20px;
+            height: 20px;
         }
 
         /* Main Content */
         .main-content {
             flex: 1;
             margin-right: 280px;
-            padding: 20px;
+            padding: 2rem;
             transition: margin-right 0.3s ease;
         }
 
@@ -120,100 +108,81 @@
             margin-right: 0;
         }
 
-        .header {
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1001;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
         }
 
-        .menu-toggle {
-            display: none;
-            background: var(--accent-orange);
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
+        .card-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
         }
 
-        .page-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--accent-orange);
-        }
-
-        /* Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--glow);
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--accent-orange);
-            text-shadow: var(--glow);
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
         }
 
         /* Forms */
-        .form-container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
         .form-input,
         .form-select,
         .form-textarea {
             width: 100%;
-            padding: 15px;
-            background: var(--primary-bg);
-            border: 2px solid var(--border-color);
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            background: var(--surface-color);
             color: var(--text-primary);
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+            font-size: 1rem;
             min-height: 48px;
         }
 
@@ -221,1278 +190,966 @@
         .form-select:focus,
         .form-textarea:focus {
             outline: none;
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 10px rgba(255, 107, 53, 0.2);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
+            border-color: var(--primary-color);
         }
 
         /* Buttons */
         .btn {
-            padding: 15px 25px;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
+            font-size: 1rem;
             transition: all 0.3s ease;
             min-height: 48px;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: var(--accent-orange);
+            background: var(--primary-color);
             color: white;
         }
 
         .btn-primary:hover {
-            background: var(--accent-orange-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--glow);
+            background: #e55a2b;
         }
 
         .btn-secondary {
-            background: var(--card-bg);
+            background: var(--surface-color);
             color: var(--text-primary);
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
         }
 
         .btn-secondary:hover {
-            border-color: var(--accent-orange);
-            color: var(--accent-orange);
+            background: var(--border-color);
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: var(--error-color);
             color: white;
         }
 
         .btn-danger:hover {
-            background: #cc3333;
+            background: #d32f2f;
         }
 
-        /* Expense List */
-        .expense-list {
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .expense-item {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.3s ease;
-        }
-
-        .expense-item:hover {
-            background: rgba(255, 107, 53, 0.05);
-        }
-
-        .expense-item:last-child {
-            border-bottom: none;
-        }
-
-        .expense-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .expense-amount {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent-orange);
-        }
-
-        .expense-category {
-            background: rgba(255, 107, 53, 0.2);
-            color: var(--accent-orange);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
-        .expense-details {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .expense-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 14px;
-            min-height: auto;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-        }
-
-        .empty-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .empty-message {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        /* Charts */
-        .chart-container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .chart-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--accent-orange);
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-right: 0;
-                padding: 15px;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .page-title {
-                font-size: 22px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .stat-card {
-                padding: 20px;
-            }
-
-            .form-container {
-                padding: 20px;
-            }
-
-            .expense-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .expense-actions {
-                flex-wrap: wrap;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 10px;
-            }
-
-            .header {
-                padding: 10px;
-            }
-
-            .form-container {
-                padding: 15px;
-            }
-
-            .stat-card {
-                padding: 15px;
-            }
-
-            .expense-item {
-                padding: 15px;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes countUp {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .count-up {
-            animation: countUp 0.6s ease-out;
-        }
-
-        /* Overlay */
-        .overlay {
+        /* Modal */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
-        .overlay.active {
-            display: block;
+        .modal.show {
+            display: flex;
         }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            z-index: 1001;
-            max-width: 90vw;
+        .modal-content {
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
-            display: none;
-        }
-
-        .modal.active {
-            display: block;
+            border: 1px solid var(--border-color);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
         }
 
         .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--accent-orange);
+            font-size: 1.25rem;
+            color: var(--text-primary);
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .close-btn:hover {
-            color: var(--accent-orange);
-        }
-
-        /* File Upload */
-        .file-upload {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .file-upload input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-upload-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            background: var(--primary-bg);
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
             color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.25rem;
+        }
+
+        /* Transactions List */
+        .transactions-list {
+            background: var(--surface-color);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .transaction-category {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .transaction-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .transaction-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
             transition: all 0.3s ease;
-            min-height: 48px;
         }
 
-        .file-upload:hover .file-upload-label {
-            border-color: var(--accent-orange);
-            color: var(--accent-orange);
+        .action-btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
         }
 
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--border-color);
-            border-radius: 50%;
-            border-top-color: var(--accent-orange);
-            animation: spin 1s ease-in-out infinite;
+        /* Charts */
+        .chart-container {
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
         }
 
-        /* Filters */
-        .filters {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-right: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .transaction-actions {
+                align-self: flex-end;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
         }
 
-        /* Success/Error Messages */
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
+        /* Animations */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .message.success {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--success);
-            border: 1px solid var(--success);
+        .count-up {
+            animation: countUp 0.6s ease-out;
         }
 
-        .message.error {
-            background: rgba(255, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid var(--danger);
-        }
-
-        .message.warning {
-            background: rgba(255, 170, 0, 0.1);
-            color: var(--warning);
-            border: 1px solid var(--warning);
-        }
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .gap-2 { gap: 1rem; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
     </style>
 </head>
 <body>
-    <div class="overlay" id="overlay"></div>
-    
     <div class="app-container">
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+            </svg>
+        </button>
+
         <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">💳 المحفظة الذكية</div>
+                <h1>متتبع المصروفات</h1>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">إدارة مصروفاتك الشخصية</p>
             </div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" data-page="dashboard">
-                        <span class="nav-icon">📊</span>
-                        لوحة التحكم
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="add-expense">
-                        <span class="nav-icon">➕</span>
-                        إضافة مصروف
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="expenses">
-                        <span class="nav-icon">📝</span>
-                        المصاريف
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="reports">
-                        <span class="nav-icon">📈</span>
-                        التقارير
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="settings">
-                        <span class="nav-icon">⚙️</span>
-                        الإعدادات
-                    </a>
-                </li>
-            </ul>
-        </nav>
+            <nav class="nav-menu">
+                <button class="nav-item active" onclick="showSection('dashboard')">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                    </svg>
+                    الرئيسية
+                </button>
+                <button class="nav-item" onclick="showSection('expenses')">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                    </svg>
+                    المصروفات
+                </button>
+                <button class="nav-item" onclick="showSection('statistics')">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                    الإحصائيات
+                </button>
+                <button class="nav-item" onclick="showSection('settings')">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                    </svg>
+                    الإعدادات
+                </button>
+            </nav>
+        </div>
 
         <!-- Main Content -->
         <main class="main-content" id="mainContent">
-            <header class="header">
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                <h1 class="page-title" id="pageTitle">لوحة التحكم</h1>
-                <div class="header-actions">
-                    <span id="currentDate"></span>
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section">
+                <h2 style="margin-bottom: 2rem; color: var(--text-primary);">لوحة التحكم</h2>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">إجمالي اليوم</span>
+                            <svg fill="var(--primary-color)" viewBox="0 0 20 20" width="24" height="24">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="card-value count-up" id="todayTotal">0 جنيه</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">إجمالي الأسبوع</span>
+                            <svg fill="var(--primary-color)" viewBox="0 0 20 20" width="24" height="24">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="card-value count-up" id="weekTotal">0 جنيه</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">إجمالي الشهر</span>
+                            <svg fill="var(--primary-color)" viewBox="0 0 20 20" width="24" height="24">
+                                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                            </svg>
+                        </div>
+                        <div class="card-value count-up" id="monthTotal">0 جنيه</div>
+                    </div>
                 </div>
-            </header>
 
-            <!-- Dashboard Page -->
-            <div class="page" id="dashboard-page">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">إجمالي اليوم</div>
-                        <div class="stat-value count-up" id="todayTotal">0</div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3>آخر المعاملات</h3>
+                    <button class="btn btn-primary" onclick="openAddExpenseModal()">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        إضافة مصروف
+                    </button>
+                </div>
+
+                <div id="recentTransactions" class="transactions-list">
+                    <div class="empty-state">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <p>لا توجد مصاريف — أضف أول مصروف الآن</p>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">إجمالي الأسبوع</div>
-                        <div class="stat-value count-up" id="weekTotal">0</div>
+                </div>
+            </div>
+
+            <!-- Expenses Section -->
+            <div id="expenses-section" class="section hidden">
+                <div class="flex justify-between items-center mb-3">
+                    <h2>المصروفات</h2>
+                    <button class="btn btn-primary" onclick="openAddExpenseModal()">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        إضافة مصروف
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <div class="flex flex-wrap gap-2">
+                        <select class="form-select" id="filterCategory" onchange="filterTransactions()" style="max-width: 200px;">
+                            <option value="">جميع الفئات</option>
+                        </select>
+                        <select class="form-select" id="filterCurrency" onchange="filterTransactions()" style="max-width: 150px;">
+                            <option value="">جميع العملات</option>
+                        </select>
+                        <input type="date" class="form-input" id="filterDateFrom" onchange="filterTransactions()" style="max-width: 150px;">
+                        <input type="date" class="form-input" id="filterDateTo" onchange="filterTransactions()" style="max-width: 150px;">
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">إجمالي الشهر</div>
-                        <div class="stat-value count-up" id="monthTotal">0</div>
+                </div>
+
+                <div id="allTransactions" class="transactions-list">
+                    <div class="empty-state">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <p>لا توجد مصاريف — أضف أول مصروف الآن</p>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">عدد المعاملات</div>
-                        <div class="stat-value count-up" id="transactionCount">0</div>
-                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div id="statistics-section" class="section hidden">
+                <h2 style="margin-bottom: 2rem;">الإحصائيات</h2>
+                
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 1rem;">المصروفات الشهرية</h3>
+                    <canvas id="monthlyChart" width="400" height="200"></canvas>
                 </div>
 
                 <div class="chart-container">
-                    <h3 class="chart-title">نشاط المصاريف</h3>
-                    <canvas id="expenseChart" width="400" height="200"></canvas>
-                </div>
-
-                <div class="expense-list" id="recentExpenses">
-                    <div class="empty-state">
-                        <div class="empty-icon">💸</div>
-                        <div class="empty-message">لا توجد مصاريف — أضف أول مصروف الآن</div>
-                        <button class="btn btn-primary" onclick="showPage('add-expense')">إضافة مصروف</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Expense Page -->
-            <div class="page" id="add-expense-page" style="display: none;">
-                <div class="form-container">
-                    <form id="expenseForm">
-                        <div class="form-group">
-                            <label class="form-label" for="amount">المبلغ *</label>
-                            <input type="number" id="amount" class="form-input" step="0.01" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="currency">العملة *</label>
-                            <select id="currency" class="form-select" required>
-                                <option value="EGP">جنيه مصري (EGP)</option>
-                                <option value="USD">دولار أمريكي (USD)</option>
-                                <option value="EUR">يورو (EUR)</option>
-                                <option value="SAR">ريال سعودي (SAR)</option>
-                                <option value="AED">درهم إماراتي (AED)</option>
-                                <option value="GBP">جنيه إسترليني (GBP)</option>
-                                <option value="JPY">ين ياباني (JPY)</option>
-                                <option value="CAD">دولار كندي (CAD)</option>
-                                <option value="AUD">دولار أسترالي (AUD)</option>
-                                <option value="CHF">فرنك سويسري (CHF)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="category">الفئة *</label>
-                            <select id="category" class="form-select" required>
-                                <option value="طعام">طعام</option>
-                                <option value="مواصلات">مواصلات</option>
-                                <option value="تسلية">تسلية</option>
-                                <option value="فواتير">فواتير</option>
-                                <option value="مخصصات">مخصصات</option>
-                                <option value="صحة">صحة</option>
-                                <option value="تعليم">تعليم</option>
-                                <option value="ملابس">ملابس</option>
-                                <option value="أخرى">أخرى</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="datetime">التاريخ والوقت *</label>
-                            <input type="datetime-local" id="datetime" class="form-input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="notes">ملاحظات</label>
-                            <textarea id="notes" class="form-textarea" placeholder="ملاحظات اختيارية..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">رفع إيصال (اختياري)</label>
-                            <div class="file-upload">
-                                <input type="file" id="receipt" accept="image/*">
-                                <label for="receipt" class="file-upload-label">
-                                    📷 اختر صورة الإيصال
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="loading" id="submitLoading" style="display: none;"></span>
-                                حفظ المصروف
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="resetForm()">إعادة تعيين</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Expenses Page -->
-            <div class="page" id="expenses-page" style="display: none;">
-                <div class="filters">
-                    <div class="filters-grid">
-                        <div class="form-group">
-                            <label class="form-label">من تاريخ</label>
-                            <input type="date" id="filterFromDate" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">إلى تاريخ</label>
-                            <input type="date" id="filterToDate" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">الفئة</label>
-                            <select id="filterCategory" class="form-select">
-                                <option value="">جميع الفئات</option>
-                                <option value="طعام">طعام</option>
-                                <option value="مواصلات">مواصلات</option>
-                                <option value="تسلية">تسلية</option>
-                                <option value="فواتير">فواتير</option>
-                                <option value="مخصصات">مخصصات</option>
-                                <option value="صحة">صحة</option>
-                                <option value="تعليم">تعليم</option>
-                                <option value="ملابس">ملابس</option>
-                                <option value="أخرى">أخرى</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">العملة</label>
-                            <select id="filterCurrency" class="form-select">
-                                <option value="">جميع العملات</option>
-                                <option value="EGP">جنيه مصري</option>
-                                <option value="USD">دولار أمريكي</option>
-                                <option value="EUR">يورو</option>
-                                <option value="SAR">ريال سعودي</option>
-                                <option value="AED">درهم إماراتي</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="applyFilters()">تطبيق الفلاتر</button>
-                    <button class="btn btn-secondary" onclick="clearFilters()">مسح الفلاتر</button>
-                </div>
-
-                <div class="expense-list" id="expensesList">
-                    <div class="empty-state">
-                        <div class="empty-icon">📝</div>
-                        <div class="empty-message">لا توجد مصاريف لعرضها</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reports Page -->
-            <div class="page" id="reports-page" style="display: none;">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">أعلى فئة إنفاق</div>
-                        <div class="stat-value" id="topCategory">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">متوسط الإنفاق اليومي</div>
-                        <div class="stat-value" id="dailyAverage">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">أكبر مصروف</div>
-                        <div class="stat-value" id="largestExpense">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">عدد أيام الإنفاق</div>
-                        <div class="stat-value" id="spendingDays">0</div>
-                    </div>
-                </div>
-
-                <div class="chart-container">
-                    <h3 class="chart-title">الإنفاق حسب الفئة</h3>
+                    <h3 style="margin-bottom: 1rem;">المصروفات حسب الفئة</h3>
                     <canvas id="categoryChart" width="400" height="200"></canvas>
                 </div>
-
-                <div class="chart-container">
-                    <h3 class="chart-title">الإنفاق حسب العملة</h3>
-                    <canvas id="currencyChart" width="400" height="200"></canvas>
-                </div>
             </div>
 
-            <!-- Settings Page -->
-            <div class="page" id="settings-page" style="display: none;">
-                <div class="form-container">
-                    <h3 class="chart-title">أسعار الصرف</h3>
-                    <div id="exchangeRates">
-                        <div class="form-group">
-                            <label class="form-label">1 USD = ? EGP</label>
-                            <input type="number" id="usdToEgp" class="form-input" step="0.01" value="30.9">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">1 EUR = ? EGP</label>
-                            <input type="number" id="eurToEgp" class="form-input" step="0.01" value="33.5">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">1 SAR = ? EGP</label>
-                            <input type="number" id="sarToEgp" class="form-input" step="0.01" value="8.2">
+            <!-- Settings Section -->
+            <div id="settings-section" class="section hidden">
+                <h2 style="margin-bottom: 2rem;">الإعدادات</h2>
+                
+                <div class="card mb-3">
+                    <h3 class="mb-2">إدارة الفئات</h3>
+                    <div class="form-group">
+                        <label class="form-label">إضافة فئة جديدة</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="form-input" id="newCategory" placeholder="اسم الفئة">
+                            <button class="btn btn-primary" onclick="addCategory()">إضافة</button>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="saveExchangeRates()">حفظ أسعار الصرف</button>
+                    <div id="categoriesList"></div>
                 </div>
 
-                <div class="form-container">
-                    <h3 class="chart-title">إدارة البيانات</h3>
+                <div class="card mb-3">
+                    <h3 class="mb-2">أسعار الصرف</h3>
                     <div class="form-group">
-                        <button class="btn btn-primary" onclick="exportData()">تصدير البيانات (JSON)</button>
-                        <button class="btn btn-primary" onclick="exportCSV()">تصدير البيانات (CSV)</button>
+                        <label class="form-label">دولار أمريكي إلى جنيه مصري</label>
+                        <input type="number" class="form-input" id="usdToEgp" step="0.01" placeholder="30.50">
                     </div>
                     <div class="form-group">
-                        <div class="file-upload">
-                            <input type="file" id="importFile" accept=".json">
-                            <label for="importFile" class="file-upload-label">
-                                📁 استيراد البيانات
-                            </label>
-                        </div>
+                        <label class="form-label">يورو إلى جنيه مصري</label>
+                        <input type="number" class="form-input" id="eurToEgp" step="0.01" placeholder="33.20">
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-danger" onclick="resetWallet()">مسح جميع البيانات</button>
+                    <button class="btn btn-primary" onclick="saveExchangeRates()">حفظ الأسعار</button>
+                </div>
+
+                <div class="card mb-3">
+                    <h3 class="mb-2">النسخ الاحتياطي والاستيراد</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="btn btn-secondary" onclick="exportToJSON()">
+                            <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            تصدير JSON
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportToCSV()">
+                            <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            تصدير CSV
+                        </button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData()">
+                        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                            <svg fill="currentColor" viewBox="0 0 20 20" width="20" height="20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            استيراد البيانات
+                        </button>
                     </div>
                 </div>
 
-                <div class="form-container">
-                    <h3 class="chart-title">المحفظة الذكية</h3>
-                    <div id="smartInsights">
-                        <div class="message warning">
-                            <strong>نصيحة ذكية:</strong> <span id="smartTip">ابدأ بإضافة مصاريفك لتحصل على نصائح ذكية!</span>
-                        </div>
-                    </div>
+                <div class="card">
+                    <h3 class="mb-2" style="color: var(--error-color);">منطقة الخطر</h3>
+                    <p class="mb-2" style="color: var(--text-secondary);">حذف جميع البيانات نهائياً</p>
+                    <button class="btn btn-danger" onclick="resetAllData()">حذف جميع البيانات</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Edit Expense Modal -->
-    <div class="modal" id="editModal">
-        <div class="modal-header">
-            <h3 class="modal-title">تعديل المصروف</h3>
-            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+    <!-- Add/Edit Expense Modal -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">إضافة مصروف جديد</h3>
+                <button class="close-btn" onclick="closeExpenseModal()">&times;</button>
+            </div>
+            <form id="expenseForm" onsubmit="saveExpense(event)">
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="expenseAmount" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">العملة *</label>
+                    <select class="form-select" id="expenseCurrency" required>
+                        <option value="EGP">جنيه مصري (EGP)</option>
+                        <option value="USD">دولار أمريكي (USD)</option>
+                        <option value="EUR">يورو (EUR)</option>
+                        <option value="SAR">ريال سعودي (SAR)</option>
+                        <option value="AED">درهم إماراتي (AED)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الفئة *</label>
+                    <select class="form-select" id="expenseCategory" required></select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">التاريخ *</label>
+                    <input type="date" class="form-input" id="expenseDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات</label>
+                    <textarea class="form-textarea" id="expenseNotes" rows="3" placeholder="ملاحظات إضافية..."></textarea>
+                </div>
+                
+                <div class="flex gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeExpenseModal()">إلغاء</button>
+                </div>
+            </form>
         </div>
-        <form id="editExpenseForm">
-            <input type="hidden" id="editExpenseId">
-            <div class="form-group">
-                <label class="form-label" for="editAmount">المبلغ *</label>
-                <input type="number" id="editAmount" class="form-input" step="0.01" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="editCurrency">العملة *</label>
-                <select id="editCurrency" class="form-select" required>
-                    <option value="EGP">جنيه مصري (EGP)</option>
-                    <option value="USD">دولار أمريكي (USD)</option>
-                    <option value="EUR">يورو (EUR)</option>
-                    <option value="SAR">ريال سعودي (SAR)</option>
-                    <option value="AED">درهم إماراتي (AED)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="editCategory">الفئة *</label>
-                <select id="editCategory" class="form-select" required>
-                    <option value="طعام">طعام</option>
-                    <option value="مواصلات">مواصلات</option>
-                    <option value="تسلية">تسلية</option>
-                    <option value="فواتير">فواتير</option>
-                    <option value="مخصصات">مخصصات</option>
-                    <option value="صحة">صحة</option>
-                    <option value="تعليم">تعليم</option>
-                    <option value="ملابس">ملابس</option>
-                    <option value="أخرى">أخرى</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="editDatetime">التاريخ والوقت *</label>
-                <input type="datetime-local" id="editDatetime" class="form-input" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="editNotes">ملاحظات</label>
-                <textarea id="editNotes" class="form-textarea"></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">إلغاء</button>
-            </div>
-        </form>
     </div>
 
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <script>
         // Global Variables
-        let expenses = [];
-        let exchangeRates = {
-            USD: 30.9,
-            EUR: 33.5,
-            SAR: 8.2,
-            AED: 8.4,
-            GBP: 38.5,
-            JPY: 0.21,
-            CAD: 22.8,
-            AUD: 20.1,
-            CHF: 34.2
+        let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        let categories = JSON.parse(localStorage.getItem('categories')) || [
+            'طعام وشراب', 'مواصلات', 'ترفيه', 'صحة', 'تسوق', 'فواتير', 'تعليم', 'أخرى'
+        ];
+        let exchangeRates = JSON.parse(localStorage.getItem('exchangeRates')) || {
+            USD: 30.50,
+            EUR: 33.20
         };
-        let currentPage = 'dashboard';
-        let expenseChart = null;
+        let currentEditingId = null;
+        let monthlyChart = null;
         let categoryChart = null;
-        let currencyChart = null;
 
         // Initialize App
         document.addEventListener('DOMContentLoaded', function() {
-            loadData();
             initializeApp();
-            updateCurrentDate();
-            setDefaultDateTime();
-            
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js');
-            }
+            registerServiceWorker();
         });
 
         function initializeApp() {
-            // Navigation
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.dataset.page;
-                    showPage(page);
-                });
-            });
-
-            // Menu toggle
-            document.getElementById('menuToggle').addEventListener('click', toggleSidebar);
-            document.getElementById('overlay').addEventListener('click', closeSidebar);
-
-            // Forms
-            document.getElementById('expenseForm').addEventListener('submit', addExpense);
-            document.getElementById('editExpenseForm').addEventListener('submit', updateExpense);
-            document.getElementById('importFile').addEventListener('change', importData);
-
-            // Filters
-            document.getElementById('filterFromDate').addEventListener('change', applyFilters);
-            document.getElementById('filterToDate').addEventListener('change', applyFilters);
-            document.getElementById('filterCategory').addEventListener('change', applyFilters);
-            document.getElementById('filterCurrency').addEventListener('change', applyFilters);
-
-            // Load initial data
+            loadCategories();
             updateDashboard();
-            renderExpensesList();
-            updateReports();
+            updateTransactionsList();
+            loadSettings();
+            setTodayDate();
+        }
+
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expenseDate').value = today;
+        }
+
+        // Service Worker Registration
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'expense-tracker-v1';
+                    const urlsToCache = ['/'];
+                    
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            }
         }
 
         // Navigation
-        function showPage(pageId) {
-            // Update active nav link
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
             });
-            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
-
-            // Show selected page
-            document.getElementById(`${pageId}-page`).style.display = 'block';
-            document.getElementById(`${pageId}-page`).classList.add('fade-in');
-
-            // Update page title
-            const titles = {
-                'dashboard': 'لوحة التحكم',
-                'add-expense': 'إضافة مصروف',
-                'expenses': 'المصاريف',
-                'reports': 'التقارير',
-                'settings': 'الإعدادات'
-            };
-            document.getElementById('pageTitle').textContent = titles[pageId];
-
-            currentPage = pageId;
-
-            // Update page-specific content
-            if (pageId === 'dashboard') {
-                updateDashboard();
-            } else if (pageId === 'expenses') {
-                renderExpensesList();
-            } else if (pageId === 'reports') {
-                updateReports();
+            event.target.classList.add('active');
+            
+            // Load section-specific data
+            if (sectionName === 'statistics') {
+                loadStatistics();
             }
-
+            
             // Close sidebar on mobile
             if (window.innerWidth <= 768) {
-                closeSidebar();
+                toggleSidebar();
             }
         }
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
+            const mainContent = document.getElementById('mainContent');
             
-            if (sidebar.classList.contains('open')) {
-                closeSidebar();
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('show');
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
             }
-        }
-
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        // Data Management
-        function loadData() {
-            const savedExpenses = localStorage.getItem('walletExpenses');
-            const savedRates = localStorage.getItem('walletExchangeRates');
-            
-            if (savedExpenses) {
-                expenses = JSON.parse(savedExpenses);
-            }
-            
-            if (savedRates) {
-                exchangeRates = JSON.parse(savedRates);
-                updateExchangeRateInputs();
-            }
-        }
-
-        function saveData() {
-            localStorage.setItem('walletExpenses', JSON.stringify(expenses));
-            localStorage.setItem('walletExchangeRates', JSON.stringify(exchangeRates));
         }
 
         // Expense Management
-        function addExpense(e) {
-            e.preventDefault();
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const loading = document.getElementById('submitLoading');
-            
-            submitBtn.disabled = true;
-            loading.style.display = 'inline-block';
+        function openAddExpenseModal() {
+            currentEditingId = null;
+            document.getElementById('modalTitle').textContent = 'إضافة مصروف جديد';
+            document.getElementById('expenseForm').reset();
+            setTodayDate();
+            document.getElementById('expenseModal').classList.add('show');
+        }
 
-            setTimeout(() => {
-                const expense = {
-                    id: Date.now(),
-                    amount: parseFloat(document.getElementById('amount').value),
-                    currency: document.getElementById('currency').value,
-                    category: document.getElementById('category').value,
-                    datetime: document.getElementById('datetime').value,
-                    notes: document.getElementById('notes').value,
-                    receipt: null, // For future implementation
-                    createdAt: new Date().toISOString()
-                };
+        function openEditExpenseModal(id) {
+            const expense = expenses.find(e => e.id === id);
+            if (!expense) return;
+            
+            currentEditingId = id;
+            document.getElementById('modalTitle').textContent = 'تعديل المصروف';
+            
+            document.getElementById('expenseAmount').value = expense.amount;
+            document.getElementById('expenseCurrency').value = expense.currency;
+            document.getElementById('expenseCategory').value = expense.category;
+            document.getElementById('expenseDate').value = expense.date;
+            document.getElementById('expenseNotes').value = expense.notes || '';
+            
+            document.getElementById('expenseModal').classList.add('show');
+        }
 
-                expenses.push(expense);
-                saveData();
-                
-                showMessage('تم إضافة المصروف بنجاح!', 'success');
-                resetForm();
-                updateDashboard();
-                
-                submitBtn.disabled = false;
-                loading.style.display = 'none';
-            }, 1000);
+        function closeExpenseModal() {
+            document.getElementById('expenseModal').classList.remove('show');
+            currentEditingId = null;
+        }
+
+        function saveExpense(event) {
+            event.preventDefault();
+            
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const currency = document.getElementById('expenseCurrency').value;
+            const category = document.getElementById('expenseCategory').value;
+            const date = document.getElementById('expenseDate').value;
+            const notes = document.getElementById('expenseNotes').value;
+            
+            const expense = {
+                id: currentEditingId || Date.now().toString(),
+                amount,
+                currency,
+                category,
+                date,
+                notes,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (currentEditingId) {
+                const index = expenses.findIndex(e => e.id === currentEditingId);
+                expenses[index] = expense;
+            } else {
+                expenses.unshift(expense);
+            }
+            
+            saveToStorage();
+            updateDashboard();
+            updateTransactionsList();
+            closeExpenseModal();
+            
+            showNotification(currentEditingId ? 'تم تحديث المصروف بنجاح' : 'تم إضافة المصروف بنجاح');
         }
 
         function deleteExpense(id) {
             if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
-                expenses = expenses.filter(expense => expense.id !== id);
-                saveData();
-                showMessage('تم حذف المصروف بنجاح!', 'success');
+                expenses = expenses.filter(e => e.id !== id);
+                saveToStorage();
                 updateDashboard();
-                renderExpensesList();
-                updateReports();
+                updateTransactionsList();
+                showNotification('تم حذف المصروف بنجاح');
             }
         }
 
-        function editExpense(id) {
-            const expense = expenses.find(exp => exp.id === id);
-            if (!expense) return;
-
-            document.getElementById('editExpenseId').value = expense.id;
-            document.getElementById('editAmount').value = expense.amount;
-            document.getElementById('editCurrency').value = expense.currency;
-            document.getElementById('editCategory').value = expense.category;
-            document.getElementById('editDatetime').value = expense.datetime;
-            document.getElementById('editNotes').value = expense.notes || '';
-
-            document.getElementById('editModal').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-
-        function updateExpense(e) {
-            e.preventDefault();
-            
-            const id = parseInt(document.getElementById('editExpenseId').value);
-            const expenseIndex = expenses.findIndex(exp => exp.id === id);
-            
-            if (expenseIndex === -1) return;
-
-            expenses[expenseIndex] = {
-                ...expenses[expenseIndex],
-                amount: parseFloat(document.getElementById('editAmount').value),
-                currency: document.getElementById('editCurrency').value,
-                category: document.getElementById('editCategory').value,
-                datetime: document.getElementById('editDatetime').value,
-                notes: document.getElementById('editNotes').value,
-                updatedAt: new Date().toISOString()
-            };
-
-            saveData();
-            closeEditModal();
-            showMessage('تم تحديث المصروف بنجاح!', 'success');
-            updateDashboard();
-            renderExpensesList();
-            updateReports();
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        function deleteDayExpenses(date) {
-            if (confirm(`هل أنت متأكد من حذف جميع مصاريف يوم ${date}؟`)) {
-                const targetDate = new Date(date).toDateString();
-                expenses = expenses.filter(expense => {
-                    const expenseDate = new Date(expense.datetime).toDateString();
-                    return expenseDate !== targetDate;
-                });
-                saveData();
-                showMessage('تم حذف مصاريف اليوم بنجاح!', 'success');
-                updateDashboard();
-                renderExpensesList();
-                updateReports();
-            }
-        }
-
-        // Dashboard
+        // Dashboard Updates
         function updateDashboard() {
-            const now = new Date();
-            const today = now.toDateString();
-            const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
-            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-            // Calculate totals by currency
-            const todayTotals = calculateTotalsByCurrency(expenses.filter(exp => 
-                new Date(exp.datetime).toDateString() === today
-            ));
+            const today = new Date().toISOString().split('T')[0];
+            const thisWeek = getWeekRange();
+            const thisMonth = new Date().toISOString().slice(0, 7);
             
-            const weekTotals = calculateTotalsByCurrency(expenses.filter(exp => 
-                new Date(exp.datetime) >= weekStart
-            ));
+            const todayExpenses = expenses.filter(e => e.date === today);
+            const weekExpenses = expenses.filter(e => e.date >= thisWeek.start && e.date <= thisWeek.end);
+            const monthExpenses = expenses.filter(e => e.date.startsWith(thisMonth));
             
-            const monthTotals = calculateTotalsByCurrency(expenses.filter(exp => 
-                new Date(exp.datetime) >= monthStart
-            ));
-
-            // Update UI
-            document.getElementById('todayTotal').textContent = formatCurrencyTotals(todayTotals);
-            document.getElementById('weekTotal').textContent = formatCurrencyTotals(weekTotals);
-            document.getElementById('monthTotal').textContent = formatCurrencyTotals(monthTotals);
-            document.getElementById('transactionCount').textContent = expenses.length;
-
-            // Update recent expenses
-            updateRecentExpenses();
+            const todayTotal = calculateTotal(todayExpenses);
+            const weekTotal = calculateTotal(weekExpenses);
+            const monthTotal = calculateTotal(monthExpenses);
             
-            // Update chart
-            updateExpenseChart();
+            document.getElementById('todayTotal').textContent = formatCurrency(todayTotal);
+            document.getElementById('weekTotal').textContent = formatCurrency(weekTotal);
+            document.getElementById('monthTotal').textContent = formatCurrency(monthTotal);
             
-            // Generate smart insights
-            generateSmartInsights();
+            // Add count-up animation
+            document.querySelectorAll('.count-up').forEach(el => {
+                el.classList.remove('count-up');
+                setTimeout(() => el.classList.add('count-up'), 10);
+            });
         }
 
-        function calculateTotalsByCurrency(expenseList) {
+        function calculateTotal(expensesList) {
+            let total = 0;
             const totals = {};
-            expenseList.forEach(expense => {
+            
+            expensesList.forEach(expense => {
                 if (!totals[expense.currency]) {
                     totals[expense.currency] = 0;
                 }
                 totals[expense.currency] += expense.amount;
             });
-            return totals;
-        }
-
-        function formatCurrencyTotals(totals) {
-            if (Object.keys(totals).length === 0) return '0';
             
-            return Object.entries(totals)
-                .map(([currency, amount]) => `${amount.toFixed(2)} ${currency}`)
-                .join(' | ');
+            // Convert to EGP for display
+            Object.keys(totals).forEach(currency => {
+                if (currency === 'EGP') {
+                    total += totals[currency];
+                } else if (currency === 'USD') {
+                    total += totals[currency] * exchangeRates.USD;
+                } else if (currency === 'EUR') {
+                    total += totals[currency] * exchangeRates.EUR;
+                } else {
+                    total += totals[currency]; // Default to 1:1 for other currencies
+                }
+            });
+            
+            return total;
         }
 
-        function updateRecentExpenses() {
-            const recentContainer = document.getElementById('recentExpenses');
-            const recentExpenses = expenses
-                .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
-                .slice(0, 5);
+        function formatCurrency(amount, currency = 'EGP') {
+            const currencyNames = {
+                'EGP': 'جنيه',
+                'USD': 'دولار',
+                'EUR': 'يورو',
+                'SAR': 'ريال',
+                'AED': 'درهم'
+            };
+            
+            return `${amount.toFixed(2)} ${currencyNames[currency] || currency}`;
+        }
 
+        function getWeekRange() {
+            const today = new Date();
+            const firstDay = new Date(today.setDate(today.getDate() - today.getDay()));
+            const lastDay = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+            
+            return {
+                start: firstDay.toISOString().split('T')[0],
+                end: lastDay.toISOString().split('T')[0]
+            };
+        }
+
+        // Transactions List
+        function updateTransactionsList() {
+            updateRecentTransactions();
+            updateAllTransactions();
+            updateFilterOptions();
+        }
+
+        function updateRecentTransactions() {
+            const container = document.getElementById('recentTransactions');
+            const recentExpenses = expenses.slice(0, 5);
+            
             if (recentExpenses.length === 0) {
-                recentContainer.innerHTML = `
+                container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">💸</div>
-                        <div class="empty-message">لا توجد مصاريف — أضف أول مصروف الآن</div>
-                        <button class="btn btn-primary" onclick="showPage('add-expense')">إضافة مصروف</button>
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <p>لا توجد مصاريف — أضف أول مصروف الآن</p>
                     </div>
                 `;
                 return;
             }
+            
+            container.innerHTML = recentExpenses.map(expense => createTransactionHTML(expense)).join('');
+        }
 
-            recentContainer.innerHTML = recentExpenses.map(expense => `
-                <div class="expense-item fade-in">
-                    <div class="expense-header">
-                        <div class="expense-amount">${expense.amount.toFixed(2)} ${expense.currency}</div>
-                        <div class="expense-category">${expense.category}</div>
+        function updateAllTransactions() {
+            const container = document.getElementById('allTransactions');
+            const filteredExpenses = getFilteredExpenses();
+            
+            if (filteredExpenses.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <p>لا توجد مصاريف تطابق المرشحات المحددة</p>
                     </div>
-                    <div class="expense-details">
-                        <div>📅 ${formatDateTime(expense.datetime)}</div>
-                        ${expense.notes ? `<div>📝 ${expense.notes}</div>` : ''}
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredExpenses.map(expense => createTransactionHTML(expense)).join('');
+        }
+
+        function createTransactionHTML(expense) {
+            const date = new Date(expense.date).toLocaleDateString('ar-EG');
+            return `
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-amount">${formatCurrency(expense.amount, expense.currency)}</div>
+                        <div class="transaction-category">${expense.category}</div>
+                        <div class="transaction-date">${date}</div>
+                        ${expense.notes ? `<div class="transaction-notes" style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${expense.notes}</div>` : ''}
                     </div>
-                    <div class="expense-actions">
-                        <button class="btn btn-secondary btn-small" onclick="editExpense(${expense.id})">تعديل</button>
-                        <button class="btn btn-danger btn-small" onclick="deleteExpense(${expense.id})">حذف</button>
+                    <div class="transaction-actions">
+                        <button class="action-btn" onclick="openEditExpenseModal('${expense.id}')" title="تعديل">
+                            <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                            </svg>
+                        </button>
+                        <button class="action-btn" onclick="deleteExpense('${expense.id}')" title="حذف">
+                            <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
                     </div>
+                </div>
+            `;
+        }
+
+        // Filtering
+        function updateFilterOptions() {
+            const categoryFilter = document.getElementById('filterCategory');
+            const currencyFilter = document.getElementById('filterCurrency');
+            
+            // Update categories
+            const currentCategories = [...new Set(expenses.map(e => e.category))];
+            categoryFilter.innerHTML = '<option value="">جميع الفئات</option>' + 
+                currentCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            
+            // Update currencies
+            const currentCurrencies = [...new Set(expenses.map(e => e.currency))];
+            currencyFilter.innerHTML = '<option value="">جميع العملات</option>' + 
+                currentCurrencies.map(curr => `<option value="${curr}">${curr}</option>`).join('');
+        }
+
+        function getFilteredExpenses() {
+            const categoryFilter = document.getElementById('filterCategory').value;
+            const currencyFilter = document.getElementById('filterCurrency').value;
+            const dateFromFilter = document.getElementById('filterDateFrom').value;
+            const dateToFilter = document.getElementById('filterDateTo').value;
+            
+            return expenses.filter(expense => {
+                if (categoryFilter && expense.category !== categoryFilter) return false;
+                if (currencyFilter && expense.currency !== currencyFilter) return false;
+                if (dateFromFilter && expense.date < dateFromFilter) return false;
+                if (dateToFilter && expense.date > dateToFilter) return false;
+                return true;
+            });
+        }
+
+        function filterTransactions() {
+            updateAllTransactions();
+        }
+
+        // Categories Management
+        function loadCategories() {
+            const categorySelects = document.querySelectorAll('#expenseCategory, #filterCategory');
+            categorySelects.forEach(select => {
+                if (select.id === 'expenseCategory') {
+                    select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+                }
+            });
+            
+            updateCategoriesList();
+        }
+
+        function updateCategoriesList() {
+            const container = document.getElementById('categoriesList');
+            container.innerHTML = categories.map(category => `
+                <div class="flex justify-between items-center" style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                    <span>${category}</span>
+                    <button class="action-btn" onclick="deleteCategory('${category}')" title="حذف">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
                 </div>
             `).join('');
         }
 
-        // Expenses List
-        function renderExpensesList() {
-            const container = document.getElementById('expensesList');
-            let filteredExpenses = [...expenses];
-
-            // Apply filters
-            const fromDate = document.getElementById('filterFromDate').value;
-            const toDate = document.getElementById('filterToDate').value;
-            const category = document.getElementById('filterCategory').value;
-            const currency = document.getElementById('filterCurrency').value;
-
-            if (fromDate) {
-                filteredExpenses = filteredExpenses.filter(exp => 
-                    new Date(exp.datetime) >= new Date(fromDate)
-                );
-            }
-
-            if (toDate) {
-                filteredExpenses = filteredExpenses.filter(exp => 
-                    new Date(exp.datetime) <= new Date(toDate + 'T23:59:59')
-                );
-            }
-
-            if (category) {
-                filteredExpenses = filteredExpenses.filter(exp => exp.category === category);
-            }
-
-            if (currency) {
-                filteredExpenses = filteredExpenses.filter(exp => exp.currency === currency);
-            }
-
-            // Sort by date (newest first)
-            filteredExpenses.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-
-            if (filteredExpenses.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">📝</div>
-                        <div class="empty-message">لا توجد مصاريف لعرضها</div>
-                    </div>
-                `;
+        function addCategory() {
+            const newCategory = document.getElementById('newCategory').value.trim();
+            if (!newCategory) return;
+            
+            if (categories.includes(newCategory)) {
+                showNotification('هذه الفئة موجودة بالفعل', 'error');
                 return;
             }
-
-            // Group by date
-            const groupedExpenses = groupExpensesByDate(filteredExpenses);
-
-            container.innerHTML = Object.entries(groupedExpenses).map(([date, dayExpenses]) => {
-                const dayTotal = calculateTotalsByCurrency(dayExpenses);
-                return `
-                    <div class="expense-day-group fade-in">
-                        <div class="day-header" style="padding: 15px 20px; background: var(--primary-bg); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                            <h4 style="color: var(--accent-orange);">${formatDate(date)}</h4>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <span style="color: var(--text-muted); font-size: 14px;">${formatCurrencyTotals(dayTotal)}</span>
-                                <button class="btn btn-danger btn-small" onclick="deleteDayExpenses('${date}')">حذف اليوم</button>
-                            </div>
-                        </div>
-                        ${dayExpenses.map(expense => `
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <div class="expense-amount">${expense.amount.toFixed(2)} ${expense.currency}</div>
-                                    <div class="expense-category">${expense.category}</div>
-                                </div>
-                                <div class="expense-details">
-                                    <div>🕐 ${formatTime(expense.datetime)}</div>
-                                    ${expense.notes ? `<div>📝 ${expense.notes}</div>` : ''}
-                                </div>
-                                <div class="expense-actions">
-                                    <button class="btn btn-secondary btn-small" onclick="editExpense(${expense.id})">تعديل</button>
-                                    <button class="btn btn-danger btn-small" onclick="deleteExpense(${expense.id})">حذف</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function groupExpensesByDate(expenses) {
-            const grouped = {};
-            expenses.forEach(expense => {
-                const date = new Date(expense.datetime).toDateString();
-                if (!grouped[date]) {
-                    grouped[date] = [];
-                }
-                grouped[date].push(expense);
-            });
-            return grouped;
-        }
-
-        // Reports
-        function updateReports() {
-            if (expenses.length === 0) {
-                document.getElementById('topCategory').textContent = '-';
-                document.getElementById('dailyAverage').textContent = '0';
-                document.getElementById('largestExpense').textContent = '0';
-                document.getElementById('spendingDays').textContent = '0';
-                return;
-            }
-
-            // Calculate statistics
-            const categoryTotals = {};
-            let totalAmount = 0;
-            let largestExpense = 0;
-            const uniqueDays = new Set();
-
-            expenses.forEach(expense => {
-                // Convert to EGP for calculations
-                const amountInEGP = convertToEGP(expense.amount, expense.currency);
-                totalAmount += amountInEGP;
-                
-                if (amountInEGP > largestExpense) {
-                    largestExpense = amountInEGP;
-                }
-
-                if (!categoryTotals[expense.category]) {
-                    categoryTotals[expense.category] = 0;
-                }
-                categoryTotals[expense.category] += amountInEGP;
-
-                uniqueDays.add(new Date(expense.datetime).toDateString());
-            });
-
-            // Top category
-            const topCategory = Object.entries(categoryTotals)
-                .sort(([,a], [,b]) => b - a)[0];
             
-            document.getElementById('topCategory').textContent = topCategory ? topCategory[0] : '-';
-            document.getElementById('dailyAverage').textContent = uniqueDays.size > 0 ? 
-                (totalAmount / uniqueDays.size).toFixed(2) + ' EGP' : '0';
-            document.getElementById('largestExpense').textContent = largestExpense.toFixed(2) + ' EGP';
-            document.getElementById('spendingDays').textContent = uniqueDays.size;
-
-            // Update charts
-            updateCategoryChart(categoryTotals);
-            updateCurrencyChart();
+            categories.push(newCategory);
+            saveToStorage();
+            loadCategories();
+            document.getElementById('newCategory').value = '';
+            showNotification('تم إضافة الفئة بنجاح');
         }
 
-        function convertToEGP(amount, currency) {
-            if (currency === 'EGP') return amount;
-            return amount * (exchangeRates[currency] || 1);
+        function deleteCategory(category) {
+            if (confirm(`هل أنت متأكد من حذف فئة "${category}"؟`)) {
+                categories = categories.filter(cat => cat !== category);
+                saveToStorage();
+                loadCategories();
+                showNotification('تم حذف الفئة بنجاح');
+            }
         }
 
-        // Charts
-        function updateExpenseChart() {
-            const ctx = document.getElementById('expenseChart').getContext('2d');
+        // Settings
+        function loadSettings() {
+            document.getElementById('usdToEgp').value = exchangeRates.USD;
+            document.getElementById('eurToEgp').value = exchangeRates.EUR;
+        }
+
+        function saveExchangeRates() {
+            exchangeRates.USD = parseFloat(document.getElementById('usdToEgp').value) || 30.50;
+            exchangeRates.EUR = parseFloat(document.getElementById('eurToEgp').value) || 33.20;
+            saveToStorage();
+            updateDashboard();
+            showNotification('تم حفظ أسعار الصرف بنجاح');
+        }
+
+        // Statistics
+        function loadStatistics() {
+            loadMonthlyChart();
+            loadCategoryChart();
+        }
+
+        function loadMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
             
-            if (expenseChart) {
-                expenseChart.destroy();
+            if (monthlyChart) {
+                monthlyChart.destroy();
             }
-
-            // Get last 7 days data
-            const last7Days = [];
-            const today = new Date();
             
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date(today);
-                date.setDate(date.getDate() - i);
-                last7Days.push(date.toDateString());
-            }
-
-            const dailyTotals = last7Days.map(date => {
-                const dayExpenses = expenses.filter(exp => 
-                    new Date(exp.datetime).toDateString() === date
-                );
-                return dayExpenses.reduce((total, exp) => 
-                    total + convertToEGP(exp.amount, exp.currency), 0
-                );
-            });
-
-            const labels = last7Days.map(date => {
-                const d = new Date(date);
-                return d.toLocaleDateString('ar-EG', { weekday: 'short' });
-            });
-
-            expenseChart = new Chart(ctx, {
+            const monthlyData = getMonthlyData();
+            
+            monthlyChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: monthlyData.labels,
                     datasets: [{
-                        label: 'الإنفاق اليومي (EGP)',
-                        data: dailyTotals,
+                        label: 'المصروفات (جنيه)',
+                        data: monthlyData.data,
                         borderColor: '#ff6b35',
                         backgroundColor: 'rgba(255, 107, 53, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        fill: true
                     }]
                 },
                 options: {
@@ -1506,21 +1163,20 @@
                         }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: '#cccccc'
-                            },
-                            grid: {
-                                color: '#333333'
-                            }
-                        },
                         x: {
                             ticks: {
-                                color: '#cccccc'
+                                color: '#b0b0b0'
                             },
                             grid: {
-                                color: '#333333'
+                                color: '#333'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#333'
                             }
                         }
                     }
@@ -1528,29 +1184,25 @@
             });
         }
 
-        function updateCategoryChart(categoryTotals) {
+        function loadCategoryChart() {
             const ctx = document.getElementById('categoryChart').getContext('2d');
             
             if (categoryChart) {
                 categoryChart.destroy();
             }
-
-            const labels = Object.keys(categoryTotals);
-            const data = Object.values(categoryTotals);
-            const colors = [
-                '#ff6b35', '#ff8555', '#ffa075', '#ffbb95', '#ffd6b5',
-                '#ffe0c4', '#ffead4', '#fff4e4', '#fff9f4'
-            ];
-
+            
+            const categoryData = getCategoryData();
+            
             categoryChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: labels,
+                    labels: categoryData.labels,
                     datasets: [{
-                        data: data,
-                        backgroundColor: colors.slice(0, labels.length),
-                        borderColor: '#1a1a1a',
-                        borderWidth: 2
+                        data: categoryData.data,
+                        backgroundColor: [
+                            '#ff6b35', '#4caf50', '#2196f3', '#ff9800',
+                            '#9c27b0', '#f44336', '#00bcd4', '#795548'
+                        ]
                     }]
                 },
                 options: {
@@ -1569,98 +1221,71 @@
             });
         }
 
-        function updateCurrencyChart() {
-            const ctx = document.getElementById('currencyChart').getContext('2d');
+        function getMonthlyData() {
+            const monthlyTotals = {};
+            const last6Months = [];
             
-            if (currencyChart) {
-                currencyChart.destroy();
+            // Get last 6 months
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                const monthKey = date.toISOString().slice(0, 7);
+                last6Months.push(monthKey);
+                monthlyTotals[monthKey] = 0;
             }
-
-            const currencyTotals = calculateTotalsByCurrency(expenses);
-            const labels = Object.keys(currencyTotals);
-            const data = Object.values(currencyTotals);
-            const colors = ['#ff6b35', '#ff8555', '#ffa075', '#ffbb95', '#ffd6b5'];
-
-            currencyChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'الإجمالي',
-                        data: data,
-                        backgroundColor: colors.slice(0, labels.length),
-                        borderColor: '#1a1a1a',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#ffffff'
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: '#cccccc'
-                            },
-                            grid: {
-                                color: '#333333'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#cccccc'
-                            },
-                            grid: {
-                                color: '#333333'
-                            }
-                        }
+            
+            // Calculate totals
+            expenses.forEach(expense => {
+                const monthKey = expense.date.slice(0, 7);
+                if (monthlyTotals.hasOwnProperty(monthKey)) {
+                    let amount = expense.amount;
+                    if (expense.currency === 'USD') {
+                        amount *= exchangeRates.USD;
+                    } else if (expense.currency === 'EUR') {
+                        amount *= exchangeRates.EUR;
                     }
+                    monthlyTotals[monthKey] += amount;
                 }
             });
-        }
-
-        // Filters
-        function applyFilters() {
-            renderExpensesList();
-        }
-
-        function clearFilters() {
-            document.getElementById('filterFromDate').value = '';
-            document.getElementById('filterToDate').value = '';
-            document.getElementById('filterCategory').value = '';
-            document.getElementById('filterCurrency').value = '';
-            renderExpensesList();
-        }
-
-        // Settings
-        function saveExchangeRates() {
-            exchangeRates.USD = parseFloat(document.getElementById('usdToEgp').value) || 30.9;
-            exchangeRates.EUR = parseFloat(document.getElementById('eurToEgp').value) || 33.5;
-            exchangeRates.SAR = parseFloat(document.getElementById('sarToEgp').value) || 8.2;
             
-            saveData();
-            showMessage('تم حفظ أسعار الصرف بنجاح!', 'success');
-            updateDashboard();
-            updateReports();
+            return {
+                labels: last6Months.map(month => {
+                    const date = new Date(month + '-01');
+                    return date.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' });
+                }),
+                data: last6Months.map(month => monthlyTotals[month])
+            };
         }
 
-        function updateExchangeRateInputs() {
-            document.getElementById('usdToEgp').value = exchangeRates.USD || 30.9;
-            document.getElementById('eurToEgp').value = exchangeRates.EUR || 33.5;
-            document.getElementById('sarToEgp').value = exchangeRates.SAR || 8.2;
+        function getCategoryData() {
+            const categoryTotals = {};
+            
+            expenses.forEach(expense => {
+                if (!categoryTotals[expense.category]) {
+                    categoryTotals[expense.category] = 0;
+                }
+                
+                let amount = expense.amount;
+                if (expense.currency === 'USD') {
+                    amount *= exchangeRates.USD;
+                } else if (expense.currency === 'EUR') {
+                    amount *= exchangeRates.EUR;
+                }
+                categoryTotals[expense.category] += amount;
+            });
+            
+            return {
+                labels: Object.keys(categoryTotals),
+                data: Object.values(categoryTotals)
+            };
         }
 
-        function exportData() {
+        // Export/Import
+        function exportToJSON() {
             const data = {
-                expenses: expenses,
-                exchangeRates: exchangeRates,
+                expenses,
+                categories,
+                exchangeRates,
                 exportDate: new Date().toISOString()
             };
             
@@ -1668,281 +1293,155 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `wallet-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `expense-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
             
-            showMessage('تم تصدير البيانات بنجاح!', 'success');
+            showNotification('تم تصدير البيانات بنجاح');
         }
 
-        function exportCSV() {
-            if (expenses.length === 0) {
-                showMessage('لا توجد بيانات للتصدير!', 'warning');
-                return;
-            }
-
-            const headers = ['التاريخ والوقت', 'المبلغ', 'العملة', 'الفئة', 'الملاحظات'];
+        function exportToCSV() {
+            const headers = ['التاريخ', 'المبلغ', 'العملة', 'الفئة', 'الملاحظات'];
             const csvContent = [
                 headers.join(','),
                 ...expenses.map(expense => [
-                    expense.datetime,
+                    expense.date,
                     expense.amount,
                     expense.currency,
                     expense.category,
                     `"${expense.notes || ''}"`
                 ].join(','))
             ].join('\n');
-
+            
             const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `wallet-expenses-${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `expense-tracker-${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
             URL.revokeObjectURL(url);
             
-            showMessage('تم تصدير البيانات بنجاح!', 'success');
+            showNotification('تم تصدير البيانات بنجاح');
         }
 
-        function importData(e) {
-            const file = e.target.files[0];
+        function importData() {
+            const file = document.getElementById('importFile').files[0];
             if (!file) return;
-
+            
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function(e) {
                 try {
-                    const data = JSON.parse(event.target.result);
+                    const data = JSON.parse(e.target.result);
                     
-                    if (data.expenses && Array.isArray(data.expenses)) {
-                        if (confirm('هل تريد دمج البيانات مع البيانات الحالية أم استبدالها؟\nموافق = دمج، إلغاء = استبدال')) {
-                            // Merge
-                            const existingIds = new Set(expenses.map(exp => exp.id));
-                            const newExpenses = data.expenses.filter(exp => !existingIds.has(exp.id));
-                            expenses = [...expenses, ...newExpenses];
-                        } else {
-                            // Replace
-                            expenses = data.expenses;
-                        }
-                        
-                        if (data.exchangeRates) {
-                            exchangeRates = { ...exchangeRates, ...data.exchangeRates };
-                            updateExchangeRateInputs();
-                        }
-                        
-                        saveData();
-                        updateDashboard();
-                        renderExpensesList();
-                        updateReports();
-                        
-                        showMessage('تم استيراد البيانات بنجاح!', 'success');
-                    } else {
-                        showMessage('ملف غير صالح!', 'error');
-                    }
+                    if (data.expenses) expenses = data.expenses;
+                    if (data.categories) categories = data.categories;
+                    if (data.exchangeRates) exchangeRates = data.exchangeRates;
+                    
+                    saveToStorage();
+                    initializeApp();
+                    showNotification('تم استيراد البيانات بنجاح');
                 } catch (error) {
-                    showMessage('خطأ في قراءة الملف!', 'error');
+                    showNotification('خطأ في استيراد البيانات', 'error');
                 }
             };
             reader.readAsText(file);
-            
-            // Reset file input
-            e.target.value = '';
         }
 
-        function resetWallet() {
-            if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
-                expenses = [];
-                saveData();
-                updateDashboard();
-                renderExpensesList();
-                updateReports();
-                showMessage('تم مسح جميع البيانات!', 'success');
-            }
-        }
-
-        // Smart Insights
-        function generateSmartInsights() {
-            const smartTipElement = document.getElementById('smartTip');
-            
-            if (expenses.length === 0) {
-                smartTipElement.textContent = 'ابدأ بإضافة مصاريفك لتحصل على نصائح ذكية!';
-                return;
-            }
-
-            const insights = [];
-            
-            // Weekly spending analysis
-            const thisWeek = getThisWeekExpenses();
-            const lastWeek = getLastWeekExpenses();
-            
-            if (thisWeek.length > 0 && lastWeek.length > 0) {
-                const thisWeekTotal = thisWeek.reduce((sum, exp) => sum + convertToEGP(exp.amount, exp.currency), 0);
-                const lastWeekTotal = lastWeek.reduce((sum, exp) => sum + convertToEGP(exp.amount, exp.currency), 0);
-                
-                if (thisWeekTotal > lastWeekTotal * 1.2) {
-                    insights.push('أنت تنفق أكثر من الأسبوع الماضي بنسبة كبيرة!');
-                } else if (thisWeekTotal < lastWeekTotal * 0.8) {
-                    insights.push('أحسنت! أنت تنفق أقل من الأسبوع الماضي.');
+        function resetAllData() {
+            if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                if (confirm('تأكيد أخير: سيتم حذف جميع المصروفات والإعدادات نهائياً!')) {
+                    localStorage.clear();
+                    expenses = [];
+                    categories = ['طعام وشراب', 'مواصلات', 'ترفيه', 'صحة', 'تسوق', 'فواتير', 'تعليم', 'أخرى'];
+                    exchangeRates = { USD: 30.50, EUR: 33.20 };
+                    initializeApp();
+                    showNotification('تم حذف جميع البيانات');
                 }
             }
+        }
 
-            // Category analysis
-            const categoryTotals = {};
-            expenses.forEach(expense => {
-                if (!categoryTotals[expense.category]) {
-                    categoryTotals[expense.category] = 0;
-                }
-                categoryTotals[expense.category] += convertToEGP(expense.amount, expense.currency);
-            });
+        // Storage
+        function saveToStorage() {
+            localStorage.setItem('expenses', JSON.stringify(expenses));
+            localStorage.setItem('categories', JSON.stringify(categories));
+            localStorage.setItem('exchangeRates', JSON.stringify(exchangeRates));
+        }
 
-            const topCategory = Object.entries(categoryTotals)
-                .sort(([,a], [,b]) => b - a)[0];
+        // Notifications
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? 'var(--error-color)' : 'var(--success-color)'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
             
-            if (topCategory && topCategory[1] > 0) {
-                const percentage = (topCategory[1] / Object.values(categoryTotals).reduce((a, b) => a + b, 0) * 100).toFixed(0);
-                if (percentage > 40) {
-                    insights.push(`أنت تنفق ${percentage}% من أموالك على ${topCategory[0]}. فكر في تقليل هذا الإنفاق.`);
-                }
-            }
-
-            // Daily spending pattern
-            const recentExpenses = expenses
-                .filter(exp => new Date(exp.datetime) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
-                .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-
-            if (recentExpenses.length >= 3) {
-                const avgAmount = recentExpenses.slice(0, 3).reduce((sum, exp) => 
-                    sum + convertToEGP(exp.amount, exp.currency), 0) / 3;
-                
-                if (avgAmount > 100) {
-                    insights.push('متوسط مصاريفك الأخيرة مرتفع. حاول وضع ميزانية يومية.');
-                }
-            }
-
-            // Currency usage
-            const currencyUsage = {};
-            expenses.forEach(expense => {
-                currencyUsage[expense.currency] = (currencyUsage[expense.currency] || 0) + 1;
-            });
-
-            if (Object.keys(currencyUsage).length > 2) {
-                insights.push('أنت تستخدم عملات متعددة. تأكد من تحديث أسعار الصرف للحصول على تقارير دقيقة.');
-            }
-
-            // Display random insight
-            if (insights.length > 0) {
-                const randomInsight = insights[Math.floor(Math.random() * insights.length)];
-                smartTipElement.textContent = randomInsight;
-            } else {
-                smartTipElement.textContent = 'استمر في تتبع مصاريفك للحصول على نصائح أفضل!';
-            }
-        }
-
-        function getThisWeekExpenses() {
-            const now = new Date();
-            const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
-            return expenses.filter(exp => new Date(exp.datetime) >= weekStart);
-        }
-
-        function getLastWeekExpenses() {
-            const now = new Date();
-            const thisWeekStart = new Date(now.setDate(now.getDate() - now.getDay()));
-            const lastWeekStart = new Date(thisWeekStart.getTime() - 7 * 24 * 60 * 60 * 1000);
-            const lastWeekEnd = new Date(thisWeekStart.getTime() - 1);
+            document.body.appendChild(notification);
             
-            return expenses.filter(exp => {
-                const expDate = new Date(exp.datetime);
-                return expDate >= lastWeekStart && expDate <= lastWeekEnd;
-            });
-        }
-
-        // Utility Functions
-        function formatDateTime(datetime) {
-            const date = new Date(datetime);
-            return date.toLocaleDateString('ar-EG', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('ar-EG', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long'
-            });
-        }
-
-        function formatTime(datetime) {
-            const date = new Date(datetime);
-            return date.toLocaleTimeString('ar-EG', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        function updateCurrentDate() {
-            const now = new Date();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-EG', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-
-        function setDefaultDateTime() {
-            const now = new Date();
-            const datetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-            document.getElementById('datetime').value = datetime;
-        }
-
-        function resetForm() {
-            document.getElementById('expenseForm').reset();
-            setDefaultDateTime();
-        }
-
-        function showMessage(message, type = 'success') {
-            // Remove existing messages
-            const existingMessages = document.querySelectorAll('.message');
-            existingMessages.forEach(msg => msg.remove());
-
-            // Create new message
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
-
-            // Insert at the top of main content
-            const mainContent = document.getElementById('mainContent');
-            const header = mainContent.querySelector('.header');
-            mainContent.insertBefore(messageDiv, header.nextSibling);
-
-            // Auto remove after 5 seconds
             setTimeout(() => {
-                messageDiv.remove();
-            }, 5000);
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
 
-        // Responsive handling
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Handle window resize
         window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
             if (window.innerWidth > 768) {
-                closeSidebar();
-                document.getElementById('sidebar').classList.remove('collapsed');
-                document.getElementById('mainContent').classList.remove('expanded');
+                sidebar.classList.remove('show');
+                if (sidebar.classList.contains('collapsed')) {
+                    mainContent.classList.add('expanded');
+                } else {
+                    mainContent.classList.remove('expanded');
+                }
             } else {
-                document.getElementById('sidebar').classList.add('collapsed');
-                document.getElementById('mainContent').classList.add('expanded');
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
             }
         });
 
-        // Initialize responsive state
-        if (window.innerWidth <= 768) {
-            document.getElementById('sidebar').classList.add('collapsed');
-            document.getElementById('mainContent').classList.add('expanded');
-        }
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                closeExpenseModal();
+            }
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('show') && 
+                !sidebar.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                toggleSidebar();
+            }
+        });
     </script>
 </body>
 </html>
